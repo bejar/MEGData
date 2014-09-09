@@ -36,25 +36,30 @@ def correlationMatrix(mdata,linit,lend,nstep):
 
 
     
-cpath='/home/bejar/MEG/Data/'
+cpath='/home/bejar/MEG/DataTest/'
 #cres='/home/bejar/Documentos/Investigacion/MAG/res/'
 cres='/home/bejar/Copy/MEG/Correlation/'
-lnames=['control1-MEG','control2-MEG','control3-MEG','control4-MEG','control5-MEG','control6-MEG','control7-MEG'
-        ,'comp1-MEG','comp3-MEG','comp4-MEG' ,'comp5-MEG','comp6-MEG','comp7-MEG','comp13-MEG'
-        ,'descomp1-MEG','descomp3-MEG','descomp4-MEG','descomp5-MEG','descomp6-MEG','descomp7-MEG'
-        ,'control1-MMN','control2-MMN','control3-MMN','control4-MMN','control5-MMN','control6-MMN','control7-MMN'
-        ,'comp1-MMN','comp3-MMN','comp4-MMN' ,'comp5-MMN','comp6-MMN','comp7-MMN','comp13-MMN'
-        ,'descomp1-MMN','descomp3-MMN','descomp4-MMN','descomp5-MMN','descomp6-MMN','descomp7-MMN']
-lcol=[0,0,0,0,0,0,0,1,1,1,1,1,1,1,2,2,2,2,2,2,0,0,0,0,0,0,0,1,1,1,1,1,1,1,2,2,2,2,2,2]
-#lnames=['comp10-MEG','comp10-MEG','comp10-MMN','comp12-MMN']
-#lcol=[1,1,1,1]
-#band='gamma-h'
-#lband=['alpha','beta','gamma-l','gamma-h','theta','delta']
-lband=['beta','gamma-l','gamma-h','theta','delta']
+# lnames=[('control1-MMN',0),('control2-MMN',0),('control3-MMN',0),('control4-MMN',0)
+#        ,('control5-MMN',0),('control6-MMN',0),('control7-MMN',0)
+#        ,('comp1-MMN',1),('comp3-MMN',1),('comp4-MMN',1) ,('comp5-MMN',1)
+#        ,('comp6-MMN',1),('comp7-MMN',1),('comp13-MMN',1)
+#        ,('descomp1-MMN',2),('descomp3-MMN',2),('descomp4-MMN',2),('descomp5-MMN',2)
+#        ,('descomp6-MMN',2),('descomp7-MMN',2)]
+
+
+lnames=[('control8-MMN',0),('control9-MMN',0),('control10-MMN',0)
+       ,('comp2-MMN',1),('comp8-MMN',1),('comp9-MMN',1)
+       ,('descomp10-MMN',2),('comp12-MMN',2)]
+
+lband=['all','gamma-l','gamma-h']
+badchannels=['A53','A31','A94']
+
 for band in lband:
     print band,
     examps=None
-    for name in lnames:
+    lcol = []
+    for name,cl in lnames:
+        lcol.append(cl)
         print name
         mats=scipy.io.loadmat( cpath+band+'/'+name+'-'+band+'.mat')
         data= mats['data']
@@ -65,8 +70,8 @@ for band in lband:
         lsnames=[]
         for i in range(chann.shape[0]):
     #        cname=chann[i][0][0]
-            cname=chann[i]
-            if cname[0]=='A' and cname!='A53' and cname!='A31':# and cname!='A44' and cname!='A94':
+            cname = chann[i][0][0]
+            if cname[0]=='A' and not cname.strip() in badchannels:
                 j+=1
                 lsnames.append(cname)
                 if mdata==None:
@@ -83,10 +88,7 @@ for band in lband:
         p=0
         for i in range(cmatrix.shape[0]-1):
             for j in range(i+1,cmatrix.shape[0]):
-                #if np.isnan(corr[i,j]) or corr[i,j]<0.7:
                 examp[p]=cmatrix[i,j]
-    #            if p in [1, 5367, 5353, 5668, 4971, 9634, 7867, 3366, 7278, 604, 6881, 2217, 8349, 9401, 5708, 9590, 7460, 4519, 664]:
-    #                print lsnames[i],lsnames[j]
                 p+=1
                 
         if examps==None:
@@ -99,10 +101,10 @@ for band in lband:
 
 
 
-    X=examps
-    Y=np.array(lcol)
+    X = examps
+    Y = np.array(lcol)
     patdata={}
     patdata['data']=X
     patdata['classes']=Y
-    scipy.io.savemat(cres+'patcoherence-'+band,patdata,do_compression=True)
+    scipy.io.savemat(cres+'patcoherence-test-'+band,patdata,do_compression=True)
     

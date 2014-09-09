@@ -227,5 +227,5 @@ badchannels=['A53','A31','A94']
 #channelsNames(lnames)
 #badChannels(lnames)
 #bandFilter(lband,lnames,badchannels)
-correlationDataset(lband,lnames,badchannels,'patcorr-test-MMN',window=10)
+correlationDataset(lband,lnames,badchannels,'patcov-test-MMN',window=10)
 

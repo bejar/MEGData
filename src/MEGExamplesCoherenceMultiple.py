@@ -39,48 +39,54 @@ def coherenceMatrix(mdata,linit,lend,nstep):
 
     
 cpath='/home/bejar/MEG/Data/'
-cres='/home/bejar/Documentos/Investigacion/MAG/res/'
-lnames=['control1-MEG','control2-MEG','control3-MEG','control4-MEG','control5-MEG','control6-MEG','control7-MEG'
-        ,'comp1-MEG','comp3-MEG','comp4-MEG' ,'comp5-MEG','comp6-MEG','comp7-MEG','comp13-MEG'
-        ,'descomp1-MEG','descomp3-MEG','descomp4-MEG','descomp5-MEG','descomp6-MEG','descomp7-MEG'
-        ,'control1-MMN','control2-MMN','control3-MMN','control4-MMN','control5-MMN','control6-MMN','control7-MMN'
-        ,'comp1-MMN','comp3-MMN','comp4-MMN' ,'comp5-MMN','comp6-MMN','comp7-MMN','comp13-MMN'
-        ,'descomp1-MMN','descomp3-MMN','descomp4-MMN','descomp5-MMN','descomp6-MMN','descomp7-MMN']
-lcol=[0,0,0,0,0,0,0,1,1,1,1,1,1,1,2,2,2,2,2,2,0,0,0,0,0,0,0,1,1,1,1,1,1,1,2,2,2,2,2,2]
-#lnames=['control1-MMN','control2-MMN','control3-MMN','control4-MMN','control5-MMN','control6-MMN','control7-MMN'
-#        ,'comp1-MMN','comp3-MMN','comp4-MMN' ,'comp5-MMN','comp6-MMN','comp7-MMN','comp13-MMN'
-#        ,'descomp1-MMN','descomp3-MMN','descomp4-MMN','descomp5-MMN','descomp6-MMN','descomp7-MMN']
-#lcol=[0,0,0,0,0,0,0,1,1,1,1,1,1,1,2,2,2,2,2,2]
+cres='/home/bejar/MEG/Resultados'
+# lnames=['control1-MEG','control2-MEG','control3-MEG','control4-MEG','control5-MEG','control6-MEG','control7-MEG'
+#         ,'comp1-MEG','comp3-MEG','comp4-MEG' ,'comp5-MEG','comp6-MEG','comp7-MEG','comp13-MEG'
+#         ,'descomp1-MEG','descomp3-MEG','descomp4-MEG','descomp5-MEG','descomp6-MEG','descomp7-MEG'
+#         ,'control1-MMN','control2-MMN','control3-MMN','control4-MMN','control5-MMN','control6-MMN','control7-MMN'
+#         ,'comp1-MMN','comp3-MMN','comp4-MMN' ,'comp5-MMN','comp6-MMN','comp7-MMN','comp13-MMN'
+#         ,'descomp1-MMN','descomp3-MMN','descomp4-MMN','descomp5-MMN','descomp6-MMN','descomp7-MMN']
 
+lnames=[('control1-MMN',0),('control2-MMN',0),('control3-MMN',0),('control4-MMN',0)
+       ,('control5-MMN',0),('control6-MMN',0),('control7-MMN',0)
+       ,('comp1-MMN',1),('comp3-MMN',1),('comp4-MMN',1) ,('comp5-MMN',1)
+       ,('comp6-MMN',1),('comp7-MMN',1),('comp13-MMN',1)
+       ,('descomp1-MMN',2),('descomp3-MMN',2),('descomp4-MMN',2),('descomp5-MMN',2)
+       ,('descomp6-MMN',2),('descomp7-MMN',2)]
 
-ntimes=3
+badchannels=['A53','A31','A94']
 
-examps={}
+ntimes = 10
+
+examps = {}
 
 for i in range(ntimes):
-    examps[i]=None    
-    
-band='gamma-h'
-for name in lnames:
+    examps[i] = None
+
+
+lcol = []
+band='all'
+for name,cl in lnames:
     print name
+    lcol.append(cl)
     mats=scipy.io.loadmat( cpath+band+'/'+name+'-'+band+'.mat')
     data= mats['data']
     chann= mats['names']
     natt=0
-    mdata=None
-    lsnames=[]
+    mdata = None
+    lsnames = []
     for i in range(chann.shape[0]):
         cname=chann[i]
-        if cname[0]=='A' and cname!='A53' and cname!='A31':# and cname!='A44' and cname!='A94':
+        if cname[0]=='A' and not cname.strip() in badchannels:
             natt+=1
             lsnames.append(cname)
-            if mdata==None:
+            if mdata == None:
                 mdata=data[i]
             else:
                 mdata=np.vstack((mdata,data[i]))
     
     #--            
-    size=mdata.shape[1]
+    size = mdata.shape[1]
     blength=int(size/ntimes)        
     for time in range(ntimes):
         print time           
@@ -94,7 +100,7 @@ for name in lnames:
                 examp[p]=cmatrix[i,j]
                 p+=1
                 
-        if examps[time]==None:
+        if examps[time] == None:
             examps[time]=examp
         else:
             examps[time]=np.vstack((examps[time],examp))
