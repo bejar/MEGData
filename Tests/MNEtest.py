@@ -7,7 +7,7 @@ Testing MNE library
 @author: bejar
 """
 
-from mne.fiff.bti import read_raw_bti
+from mne.io import read_raw_bti
 from mne.viz import circular_layout, plot_connectivity_circle
 import numpy as np
 import matplotlib.pyplot as plt

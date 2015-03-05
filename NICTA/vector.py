@@ -46,7 +46,7 @@ __version__ = '$Revision: $'
 import numpy
 
 from generic import CKernel
-from src.NICTA.my_exceptions import CElefantConstraintException
+from NICTA.my_exceptions import CElefantConstraintException
 
 
 ## Generic kernel class for vectorial data
