@@ -21,4 +21,8 @@ __author__ = 'bejar'
 
 datapath = '/home/bejar/MEG/'
 
-smaqepath = '/home/bejar/MEG/smaque/'
+smaqepath = '/home/bejar/MEG/smaqe/'
+
+vcpath = '/home/bejar/MEG/VC/'
+
+# /home/bejar/MEG/smaqe/ESQcon2/1

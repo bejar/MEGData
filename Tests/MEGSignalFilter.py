@@ -29,8 +29,8 @@ def filterSignal(data,iband,fband):
         flSignal=scipy.signal.filtfilt(b, a, temp)
     return flSignal
 
-cpath='/home/bejar/MEG/Data/'
-#lnames=['control1-MEG']
+cpath='/home/bejar/MEG/DataTest/all/'
+lnames=['comp8-MEG']
 #lnames=['control1-MEG','control2-MEG','control3-MEG','control4-MEG','control5-MEG','control6-MEG','control7-MEG'
 #        ,'comp1-MEG','comp3-MEG','comp4-MEG' ,'comp5-MEG','comp6-MEG','comp7-MEG','comp13-MEG'
 #        ,'descomp1-MEG','descomp3-MEG','descomp4-MEG','descomp5-MEG','descomp6-MEG','descomp7-MEG'
@@ -38,14 +38,15 @@ cpath='/home/bejar/MEG/Data/'
 #        ,'comp1-MMN','comp3-MMN','comp4-MMN' ,'comp5-MMN','comp6-MMN','comp7-MMN','comp13-MMN'
 #        ,'descomp1-MMN','descomp3-MMN','descomp4-MMN','descomp5-MMN','descomp6-MMN','descomp7-MMN']
 #lcol=[0,0,0,0,0,0,0,1,1,1,1,1,1,1,2,2,2,2,2,2,0,0,0,0,0,0,0,1,1,1,1,1,1,1,2,2,2,2,2,2]
-lnames=['comp10-MEG','comp12-MEG','comp10-MMN','comp12-MMN']
+#lnames=['comp10-MEG','comp12-MEG','comp10-MMN','comp12-MMN']
+
 lcol=[1,1,1,1]
 
 freq=678.17/2
 #lband=[('alpha',8,13),('beta',13,30),('gamma-l',30,60),('gamma-h',60,200),('theta',4,8),('delta',1,4)]
-lband=[('delta',1,4)]
+lband=[('gamma-l',30,60)]
 for band,iband,fband in lband: 
-    cres='/home/bejar/MEG/Data/'+band+'/'
+    cres='/home/bejar/MEG/DataTest/'+band+'/'
     for name in lnames:
         print name
         mats=scipy.io.loadmat( cpath+name+'.mat')
@@ -57,7 +58,7 @@ for band,iband,fband in lband:
         lcnames=[]
         for i in range(chann.shape[0]):
             cname=chann[i][0][0]
-            if cname[0]=='A' and cname!='A53' and cname!='A31' and cname!='A44' and cname!='A94':
+            if cname[0]=='A' and cname!='A53' and cname!='A31' and cname!='A94': #and cname!='A44'
                 j+=1
                 lcnames.append(cname)
                 if mdata==None:
